@@ -1,0 +1,36 @@
+#formLogin {
+    position: absolute;
+    padding: 200px 600px;
+    color: white;
+}
+
+#formRegister {
+    position: absolute;
+    padding: 50px 400px;
+    color: yellow;
+}
+
+#formRegister input {
+    margin-bottom: 20px;
+}
+
+fieldset {
+    border: 2px solid #ccc !important;
+    border-radius: 10px;
+    padding: 10px !important;
+    margin: 10px !important;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+
+caption {
+    caption-side: top;
+}
+
+input {
+    width: 600px;
+    border-radius: 5px;
+}
