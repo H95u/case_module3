@@ -87,7 +87,7 @@
                 </div>
                 <button type="submit">Đăng Ký</button>
                 <div class="register-link">
-                    <p>Bạn đã có tài khoản? <a href="login2.jsp">Đăng nhập</a></p>
+                    <p>Bạn đã có tài khoản? <a href="login.jsp">Đăng nhập</a></p>
                 </div>
             </div>
         </form>
