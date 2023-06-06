@@ -78,16 +78,16 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
             response.sendRedirect("/home");
         } else {
-            response.sendRedirect("/login/login.jsp?loginCode=1");
+            response.sendRedirect("/login/login2.jsp?loginCode=1");
         }
     }
 
     private void createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean checkRegister = LoginService.getInstance().createNewAccount(request);
         if (checkRegister) {
-            response.sendRedirect("/login/login.jsp?regCode=1");
+            response.sendRedirect("/login/login2.jsp?regCode=1");
         } else {
-            response.sendRedirect("/login/login.jsp?regCode=2");
+            response.sendRedirect("/login/login2.jsp?regCode=2");
         }
     }
 
