@@ -148,7 +148,8 @@ public class PartnerDAO {
         }
         return optionsList;
     }
-    public void deleteById (int id) {
+
+    public void deleteById(int id) {
         String query = "DELETE FROM partner WHERE id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -156,6 +157,40 @@ public class PartnerDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public List<Partner> searchByOption(int oId) {
+        List<Partner> partnerList = new ArrayList<>();
+        String query = "select partner.id,nickname,hourly_rate,availability,image,dob,address,gender,o.id\n" +
+                "from partner join partner_options po on partner.id = po.partner_id\n" +
+                "    join options o on po.options_id = o.id where o.id = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1,oId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("partner.id");
+                String nickname = resultSet.getString("nickname");
+                double hourlyRate = resultSet.getDouble("hourly_rate");
+                int availability = resultSet.getInt("availability");
+                LocalDate dob = resultSet.getDate("dob").toLocalDate();
+                String address = resultSet.getString("address");
+                int gender = resultSet.getInt("gender");
+                List<Options> optionsList = findOption(id);
+                Blob imageBlob = resultSet.getBlob("image");
+                InputStream imageStream;
+                if (imageBlob != null) {
+                    imageStream = imageBlob.getBinaryStream();
+                    byte[] imageBytes = imageStream.readAllBytes();
+                    partnerList.add(new Partner(id, nickname,
+                            hourlyRate, availability, imageBytes, dob, address, gender, optionsList));
+                } else {
+                    partnerList.add(new Partner(id, nickname,
+                            hourlyRate, availability, null, dob, address, gender, optionsList));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return partnerList;
     }
 }

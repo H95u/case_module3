@@ -93,3 +93,11 @@ body{
     font-weight: 600;
     color: #0062cc;
 }
+.bookingForm {
+    width: 500px;
+    height: 250px;
+    border: 1px solid black;
+    background-color: white;
+    margin-left: 480px;
+    position: absolute;
+}

@@ -37,6 +37,9 @@ public class HomeServlet extends HttpServlet {
             case "logout":
                 logout(request, response);
                 break;
+            case "search":
+                searchByOption(request, response);
+                break;
             default:
                 findAll(request, response);
                 break;
@@ -69,7 +72,7 @@ public class HomeServlet extends HttpServlet {
         List<Partner> partnerList = PartnerDAO.getInstance().findAll();
         List<Options> optionsList = OptionsDAO.getInstance().findAll();
         request.setAttribute("partnerList", partnerList);
-        request.setAttribute("optionList",optionsList);
+        request.setAttribute("optionList", optionsList);
         request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
@@ -119,4 +122,12 @@ public class HomeServlet extends HttpServlet {
         response.sendRedirect("/home?action=partnerInfo&id=" + id);
     }
 
+    private void searchByOption(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int optionId = Integer.parseInt(request.getParameter("oid"));
+        List<Partner> partnerList = PartnerDAO.getInstance().searchByOption(optionId);
+        List<Options> optionsList = OptionsDAO.getInstance().findAll();
+        request.setAttribute("partnerList", partnerList);
+        request.setAttribute("optionList", optionsList);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
+    }
 }
