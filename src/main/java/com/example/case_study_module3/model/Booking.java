@@ -9,23 +9,34 @@ public class Booking {
     private Partner partner;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private Options option;
 
     public Booking() {
     }
 
-    public Booking(int id, User user, Partner partner, LocalDateTime startTime, LocalDateTime endTime) {
+    public Booking(int id, User user, Partner partner, LocalDateTime startTime, LocalDateTime endTime,Options option) {
         this.id = id;
         this.user = user;
         this.partner = partner;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.option = option;
     }
 
-
-    public Booking(int id, LocalDateTime startTime, LocalDateTime endTime) {
+    public Booking(User user, Partner partner, LocalDateTime startTime, LocalDateTime endTime,Options option) {
+        this.user = user;
+        this.partner = partner;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.option = option;
     }
 
-    public Booking(int id, int userId, int partnerId, LocalDateTime startTime, LocalDateTime endTime) {
+    public Options getOption() {
+        return option;
+    }
+
+    public void setOption(Options option) {
+        this.option = option;
     }
 
     public int getId() {
