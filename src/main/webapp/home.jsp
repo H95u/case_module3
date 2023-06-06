@@ -35,7 +35,7 @@
                         Chủ</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="#">Về Chúng Tôi</a>
                 </li>
                 <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Dịch
@@ -49,7 +49,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Thanh Toán</a>
+                    <a href="payment/payment.jsp">Thanh Toán</a>
                 </li>
                 <li>
                     <a href="#">Liên Hệ</a>
