@@ -22,6 +22,9 @@ public class Booking {
     }
 
 
+    public Booking(int id, LocalDateTime startTime, LocalDateTime endTime) {
+    }
+
     public Booking(int id, int userId, int partnerId, LocalDateTime startTime, LocalDateTime endTime) {
     }
 

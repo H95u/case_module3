@@ -2,8 +2,6 @@ package com.example.case_study_module3.DAO;
 
 import com.example.case_study_module3.DAO.connection.MyConnection;
 import com.example.case_study_module3.model.Booking;
-import com.example.case_study_module3.model.Partner;
-import com.example.case_study_module3.model.User;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -24,18 +22,16 @@ public class BookingDAO {
 
     public List<Booking> findAll() {
         List<Booking> bookingList = new ArrayList<>();
-        String query = "select * from booking;";
+        String query = "SELECT booking.id, booking.startTime, booking.endTime, partner.nickname, user.fullname"
+                + "FROM booking INNER JOIN partner ON booking.partner_id = partner.id "
+                + "INNER JOIN user ON booking.user_id = user.id;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
-                int partnerId = resultSet.getInt("partner_id");
-                User user = UserDAO.getInstance().findById(userId);
-                Partner partner = PartnerDAO.getInstance().findById(partnerId);
                 LocalDateTime startTime = resultSet.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime endTime = resultSet.getTimestamp("endTime").toLocalDateTime();
-                bookingList.add(new Booking(id, user, partner, startTime, endTime));
+                bookingList.add(new Booking(id, startTime, endTime));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,8 +58,7 @@ public class BookingDAO {
         }
         return booking;
     }
-
-    public void deleteById(int id) {
+    public void deleteById (int id) {
         String query = "DELETE FROM booking WHERE id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);

@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-lg-5">${o.name}</div>
             <div class="col-lg-7">
-                <input type="radio" name="option${o.id}" value="${o.name}" ${isChecked} />
+                <input type="checkbox" name="option${o.id}" value="${o.name}" ${isChecked} />
             </div>
         </div>
         <hr>

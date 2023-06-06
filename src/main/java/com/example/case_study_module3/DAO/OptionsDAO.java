@@ -40,4 +40,21 @@ public class OptionsDAO {
         }
         return optionsList;
     }
+
+    public Options finById(int id) {
+        Options option = null;
+        String querry = "select * from options";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(querry)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                double price = resultSet.getDouble("price");
+                option = new Options(id, name, price);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return option;
+    }
+
 }

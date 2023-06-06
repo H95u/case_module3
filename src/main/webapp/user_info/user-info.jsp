@@ -20,9 +20,9 @@
 </head>
 <body>
 <div>
-        <a href="/home">
-            <img style="width: 50px;height: 50px" src="/img/logo.png">
-        </a>
+    <a href="/home">
+        <img style="width: 50px;height: 50px" src="/img/logo.png">
+    </a>
     <h1 style="text-align: center;color: white">THÔNG TIN CÁ NHÂN</h1>
 </div>
 <hr>
@@ -81,16 +81,11 @@
             <div class="col-md-4">
                 <div class="profile-work">
                     <p>FACEBBOOK LINK</p>
-                    <a href="">FaceBook Link</a><br/>
                     <!--            <a href="">Bootsnipp Profile</a><br/>-->
                     <!--            <a href="">Bootply Profile</a>-->
                     <p>MÔ TẢ</p>
                     <p>Lịch sự và chuyên nghiệp</p>
-                    <!--            <a href="">Web Designer</a><br/>-->
-                    <!--            <a href="">Web Developer</a><br/>-->
-                    <!--            <a href="">WordPress</a><br/>-->
-                    <!--            <a href="">WooCommerce</a><br/>-->
-                    <!--            <a href="">PHP, .Net</a><br/>-->
+                    <a href="/home?action=logout"><p>Đăng xuất</p></a>
                 </div>
             </div>
             <div class="col-md-8">
