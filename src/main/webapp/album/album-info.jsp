@@ -10,23 +10,20 @@
 <%@ page import="java.util.Base64" %>
 <html>
 <head>
-    <title>showAlbum</title>
+    <title>show album</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/album/album.css">
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6">
-            <img style="border-radius: 50px;height: 250px;width: 250px"
+    <div style="text-align: center">
+        <a href="/partners?action=partnerInfo&id=${partner.id}"> <img style="border-radius: 120px;height: 250px;width: 250px"
                  src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(partner.image)}"/>
-        </div>
-        <div class="col-lg-6">
-
-        </div>
+        </a>
     </div>
 </div>
 <hr>
@@ -42,15 +39,19 @@
                     </div>
                 </c:if>
                 <c:if test="${a.image != null}">
-                    <div class="col-lg-4" style="text-align: center;margin-top: 10px">
-                        <img style="border-radius:30px;height: 250px;width: 250px"
-                             src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(a.image)}"/>
+                    <div class="col-lg-4">
+                        <div class="gallery-image">
+                            <div class="img-box">
+                                <img src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(a.image)}"
+                                     alt=""/>
+                            </div>
+                        </div>
                     </div>
                 </c:if>
             </c:forEach>
             <div style="margin-top: 5px;" class="file btn btn-lg btn-primary">
                 Thêm Ảnh
-                <input oninput="submitForm();" type="file" name="file" />
+                <input oninput="submitForm();" type="file" name="file"/>
             </div>
         </div>
     </div>

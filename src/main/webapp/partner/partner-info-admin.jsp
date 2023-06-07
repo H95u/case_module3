@@ -108,7 +108,8 @@
                                aria-controls="home" aria-selected="true">Thông tin chi tiết</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="/partners?action=showAlbum&id=${user.id}" role="tab"
+                            <a class="nav-link" id="profile-tab" data-toggle="tab"
+                               href="/partners?action=showAlbum&id=${user.id}" role="tab"
                                aria-controls="profile" aria-selected="false">Album</a>
                         </li>
                     </ul>
@@ -191,16 +192,18 @@
                                 <label>Các dịch vụ cung cấp</label>
                             </div>
                             <div class="col-md-6">
-                                <c:forEach var="o" items="${optionList}">
+                                <c:forEach var="o" items="${user.optionsList}">
                                     <p>${o.name}</p>
                                 </c:forEach>
                             </div>
                         </div>
-                        <div>
-                            <button class="btn btn-info">
-                                <a href="/partners?action=updateOption&id=${user.id}">Thêm dịch vụ</a>
-                            </button>
-                        </div>
+                        <c:if test="${sessionScope.user.userRole == 1}">
+                            <div>
+                                <button class="btn btn-info">
+                                    <a href="/partners?action=updateOption&id=${user.id}">Thêm dịch vụ</a>
+                                </button>
+                            </div>
+                        </c:if>
                     </div>
 
                 </div>

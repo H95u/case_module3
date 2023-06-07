@@ -5,6 +5,7 @@ import com.example.case_study_module3.model.Options;
 import com.example.case_study_module3.model.Partner;
 import com.example.case_study_module3.model.User;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
@@ -168,25 +169,7 @@ public class PartnerDAO {
             preparedStatement.setInt(1, oId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("partner.id");
-                String nickname = resultSet.getString("nickname");
-                double hourlyRate = resultSet.getDouble("hourly_rate");
-                int availability = resultSet.getInt("availability");
-                LocalDate dob = resultSet.getDate("dob").toLocalDate();
-                String address = resultSet.getString("address");
-                int gender = resultSet.getInt("gender");
-                List<Options> optionsList = findOption(id);
-                Blob imageBlob = resultSet.getBlob("image");
-                InputStream imageStream;
-                if (imageBlob != null) {
-                    imageStream = imageBlob.getBinaryStream();
-                    byte[] imageBytes = imageStream.readAllBytes();
-                    partnerList.add(new Partner(id, nickname,
-                            hourlyRate, availability, imageBytes, dob, address, gender, optionsList));
-                } else {
-                    partnerList.add(new Partner(id, nickname,
-                            hourlyRate, availability, null, dob, address, gender, optionsList));
-                }
+                getPartnerList(resultSet, "partner.id", partnerList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,25 +195,7 @@ public class PartnerDAO {
             preparedStatement.setInt(1, gId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String nickname = resultSet.getString("nickname");
-                double hourlyRate = resultSet.getDouble("hourly_rate");
-                int availability = resultSet.getInt("availability");
-                LocalDate dob = resultSet.getDate("dob").toLocalDate();
-                String address = resultSet.getString("address");
-                int gender = resultSet.getInt("gender");
-                List<Options> optionsList = findOption(id);
-                Blob imageBlob = resultSet.getBlob("image");
-                InputStream imageStream;
-                if (imageBlob != null) {
-                    imageStream = imageBlob.getBinaryStream();
-                    byte[] imageBytes = imageStream.readAllBytes();
-                    partnerList.add(new Partner(id, nickname,
-                            hourlyRate, availability, imageBytes, dob, address, gender, optionsList));
-                } else {
-                    partnerList.add(new Partner(id, nickname,
-                            hourlyRate, availability, null, dob, address, gender, optionsList));
-                }
+                getPartnerList(resultSet, "id", partnerList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,25 +210,7 @@ public class PartnerDAO {
             preparedStatement.setString(1, "%" + name + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String nickname = resultSet.getString("nickname");
-                double hourlyRate = resultSet.getDouble("hourly_rate");
-                int availability = resultSet.getInt("availability");
-                LocalDate dob = resultSet.getDate("dob").toLocalDate();
-                String address = resultSet.getString("address");
-                int gender = resultSet.getInt("gender");
-                List<Options> optionsList = findOption(id);
-                Blob imageBlob = resultSet.getBlob("image");
-                InputStream imageStream;
-                if (imageBlob != null) {
-                    imageStream = imageBlob.getBinaryStream();
-                    byte[] imageBytes = imageStream.readAllBytes();
-                    partnerList.add(new Partner(id, nickname,
-                            hourlyRate, availability, imageBytes, dob, address, gender, optionsList));
-                } else {
-                    partnerList.add(new Partner(id, nickname,
-                            hourlyRate, availability, null, dob, address, gender, optionsList));
-                }
+                getPartnerList(resultSet, "id", partnerList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,4 +218,40 @@ public class PartnerDAO {
         return partnerList;
     }
 
+    public List<Partner> searchByStatus(int status) {
+        List<Partner> partnerList = new ArrayList<>();
+        String query = "select * from partner where availability = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1,status);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                getPartnerList(resultSet, "id", partnerList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return partnerList;
+    }
+
+    private void getPartnerList(ResultSet resultSet, String id, List<Partner> partnerList) throws SQLException, IOException {
+        int pId = resultSet.getInt(id);
+        String nickname = resultSet.getString("nickname");
+        double hourlyRate = resultSet.getDouble("hourly_rate");
+        int availability = resultSet.getInt("availability");
+        LocalDate dob = resultSet.getDate("dob").toLocalDate();
+        String address = resultSet.getString("address");
+        int gender = resultSet.getInt("gender");
+        List<Options> optionsList = findOption(pId);
+        Blob imageBlob = resultSet.getBlob("image");
+        InputStream imageStream;
+        if (imageBlob != null) {
+            imageStream = imageBlob.getBinaryStream();
+            byte[] imageBytes = imageStream.readAllBytes();
+            partnerList.add(new Partner(pId, nickname,
+                    hourlyRate, availability, imageBytes, dob, address, gender, optionsList));
+        } else {
+            partnerList.add(new Partner(pId, nickname,
+                    hourlyRate, availability, null, dob, address, gender, optionsList));
+        }
+    }
 }

@@ -121,18 +121,22 @@ public class PartnerServlet extends HttpServlet {
 
     private void updateOptionPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Options> optionsList = new ArrayList<>();
-        String[] selectedOptionIds = request.getParameterValues("option");
         int pId = Integer.parseInt(request.getParameter("id"));
         PartnerDAO.getInstance().findById(pId);
-        for (int i = 0; i < selectedOptionIds.length; i++) {
-            int oId = Integer.parseInt(selectedOptionIds[i]);
-            optionsList.add(OptionsDAO.getInstance().finById(oId));
+        String[] selectedOptionIds = request.getParameterValues("option");
+        if (selectedOptionIds != null) {
+            for (int i = 0; i < selectedOptionIds.length; i++) {
+                int oId = Integer.parseInt(selectedOptionIds[i]);
+                optionsList.add(OptionsDAO.getInstance().finById(oId));
+            }
+            OptionsDAO.getInstance().deletePartnerOption(pId);
+            for (Options options : optionsList) {
+                OptionsDAO.getInstance().newPartnerOption(pId, options.getId());
+            }
+            response.sendRedirect("/home");
+        } else {
+            response.sendRedirect("/home");
         }
-        OptionsDAO.getInstance().deletePartnerOption(pId);
-        for (Options options : optionsList) {
-            OptionsDAO.getInstance().newPartnerOption(pId, options.getId());
-        }
-        response.sendRedirect("/home");
     }
 
 }

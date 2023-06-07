@@ -73,7 +73,7 @@
     </nav>
 
     <!-- Page Content  -->
-    <div id="content" class="p-4 p-md-5">
+    <div id="content" class="p-4 p-md-5" style="background-color: #a7045d">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -83,29 +83,42 @@
                     <span class="sr-only">Toggle Menu</span>
                 </button>
                 <div style="margin-left: 10px">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        Giới tính
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/home?action=searchByGender&gender=1">Nam</a></li>
-                        <li><a class="dropdown-item" href="/home?action=searchByGender&gender=0">Nữ</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        Dịch vụ
-                    </button>
-                    <ul class="dropdown-menu">
-                        <c:forEach var="o" items="${optionList}">
-                            <li>
-                                <a class="dropdown-item" href="/home?action=search&oid=${o.id}">${o.name}</a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            Giới tính
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/home?action=searchByGender&gender=1">Nam</a></li>
+                            <li><a class="dropdown-item" href="/home?action=searchByGender&gender=0">Nữ</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            Dịch vụ
+                        </button>
+                        <ul class="dropdown-menu">
+                            <c:forEach var="o" items="${optionList}">
+                                <li>
+                                    <a class="dropdown-item" href="/home?action=search&oid=${o.id}">${o.name}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            Trạng thái
+                        </button>
+                        <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="/home?action=searchByStatus&status=1">Có thể thuê</a>
+                                    <a class="dropdown-item" href="/home?action=searchByStatus&status=0">Đang bận</a>
+                                </li>
+                        </ul>
+                    </div>
+
                 </div>
                 <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -152,7 +165,7 @@
                 </div>
             </div>
         </nav>
-        <h3 style="text-align: center;color: red;font-style: italic">Danh sách hot girl - hot boy</h3>
+        <h3 style="text-align: center;color: yellow;font-style: italic">Danh sách hot girl - hot boy</h3>
         <div class="row" style="margin: auto">
             <c:forEach var="p" items="${partnerList}">
                 <div class="col-lg-3" style="text-align: center;">

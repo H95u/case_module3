@@ -27,8 +27,8 @@ public class HomeServlet extends HttpServlet {
             action = "";
         }
         switch (action) {
-            case "searchByName":
-
+            case "searchByStatus":
+                searchByStatus(request, response);
                 break;
             case "update":
                 updatePartnerGet(request, response);
@@ -162,6 +162,15 @@ public class HomeServlet extends HttpServlet {
     private void searchByName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         List<Partner> partnerList = PartnerDAO.getInstance().searchByName(name);
+        List<Options> optionsList = OptionsDAO.getInstance().findAll();
+        request.setAttribute("partnerList", partnerList);
+        request.setAttribute("optionList", optionsList);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
+    }
+
+    private void searchByStatus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int status = Integer.parseInt(request.getParameter("status"));
+        List<Partner> partnerList = PartnerDAO.getInstance().searchByStatus(status);
         List<Options> optionsList = OptionsDAO.getInstance().findAll();
         request.setAttribute("partnerList", partnerList);
         request.setAttribute("optionList", optionsList);
