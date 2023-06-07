@@ -10,7 +10,12 @@
 <head>
     <title>Title</title>
 </head>
-<body>
-<h1>Bạn không có đơn nào</h1>
+<body onload="noBooking()">
 </body>
+<script>
+    function noBooking() {
+        alert("Bạn không có đơn nào !!")
+        window.location.href = "/home"
+    }
+</script>
 </html>

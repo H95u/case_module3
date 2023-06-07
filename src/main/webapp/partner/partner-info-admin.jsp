@@ -124,6 +124,7 @@
                 </div>
             </c:if>
             <c:if test="${user.availability == 1 && sessionScope.user != null}">
+
                 <div class="col-md-1">
                     <a class="btn btn-danger" onclick="showBookingForm();">Thuê</a>
                 </div>

@@ -15,6 +15,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @WebServlet(name = "BookingServlet", value = "/booking")
 public class BookingServlet extends HttpServlet {
@@ -28,7 +29,7 @@ public class BookingServlet extends HttpServlet {
             case "create":
                 break;
             case "payment":
-                 payment(request, response);
+                payment(request, response);
                 break;
             case "confirm":
                 confirmBookingGet(request, response);
@@ -61,16 +62,43 @@ public class BookingServlet extends HttpServlet {
     }
 
     private void createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        boolean checkBooking = true;
+        List<Booking> bookingList = BookingDAO.getInstance().findAll();
         int userId = Integer.parseInt(request.getParameter("uid"));
-        int partnerId = Integer.parseInt(request.getParameter("pid"));
-        int optionId = Integer.parseInt(request.getParameter("oid"));
-        User user = UserDAO.getInstance().findById(userId);
-        Partner partner = PartnerDAO.getInstance().findById(partnerId);
-        Options option = OptionsDAO.getInstance().finById(optionId);
-        LocalDateTime startTime = LocalDateTime.parse(request.getParameter("startTime"));
-        LocalDateTime endTime = LocalDateTime.parse(request.getParameter("endTime"));
-        BookingDAO.getInstance().createNewBooking(new Booking(user, partner, startTime, endTime, option));
-        response.sendRedirect("/booking?action=confirm");
+        for (Booking booking : bookingList) {
+            if (booking.getUser().getId() == userId) {
+                checkBooking = false;
+            }
+        }
+        if (checkBooking) {
+            int partnerId = Integer.parseInt(request.getParameter("pid"));
+            int optionId = Integer.parseInt(request.getParameter("oid"));
+            User user = UserDAO.getInstance().findById(userId);
+            Partner partner = PartnerDAO.getInstance().findById(partnerId);
+            Options option = OptionsDAO.getInstance().finById(optionId);
+            String startTimeStr = request.getParameter("startTime");
+            String endTimeStr = request.getParameter("endTime");
+            if (startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+                response.sendRedirect("/booking/cant-booking.jsp?bookingCode=3");
+            } else {
+                LocalDateTime startTime = LocalDateTime.parse(startTimeStr);
+                LocalDateTime endTime = LocalDateTime.parse((endTimeStr));
+                validateBookingTime(response, user, partner, option, startTime, endTime);
+            }
+        } else {
+            response.sendRedirect("/booking/cant-booking.jsp?bookingCode=0");
+        }
+    }
+
+    private static void validateBookingTime(HttpServletResponse response, User user, Partner partner, Options option, LocalDateTime startTime, LocalDateTime endTime) throws IOException {
+        if (endTime.isAfter(startTime)) {
+            BookingDAO.getInstance().createNewBooking(new Booking(user, partner, startTime, endTime, option));
+            response.sendRedirect("/booking?action=confirm");
+        } else if (endTime.isBefore(startTime)) {
+            response.sendRedirect("/booking/cant-booking.jsp?bookingCode=1");
+        } else {
+            response.sendRedirect("/booking/cant-booking.jsp?bookingCode=2");
+        }
     }
 
     private void confirmBookingGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -101,7 +129,7 @@ public class BookingServlet extends HttpServlet {
             Duration duration = Duration.between(booking.getStartTime(), booking.getEndTime());
             request.setAttribute("time", duration.toHours());
             request.getRequestDispatcher("/payment/payment.jsp").forward(request, response);
-        }else {
+        } else {
             response.sendRedirect("/booking/no-booking.jsp");
         }
     }

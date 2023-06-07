@@ -96,7 +96,7 @@
     </div>
     <div class="form-group">
         <label>Tổng thời gian:</label>
-        <p> ${time}</p>
+        <p> ${time} (giờ)</p>
     </div>
     <div class="form-group">
         <label>Giá tiền:</label>
