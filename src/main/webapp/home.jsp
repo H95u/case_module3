@@ -20,15 +20,15 @@
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="p-4 pt-5">
-            <c:if test="${sessionScope.user != null}">
+            <c:if test="${user != null}">
                 <c:if test="${user.image != null}">
                     <a href="/userInfo?action=showInfo&id=${user.id}">
                         <img width="50" height="50" style="border-radius: 30px"
-                             src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(sessionScope.user.image)}"/></a>
+                             src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(user.image)}"/></a>
                     <hr>
                 </c:if>
-                <c:if test="${sessionScope.user.image == null}">
-                    <a href="/userInfo?action=showInfo&id=${sessionScope.user.id}">
+                <c:if test="${user.image == null}">
+                    <a href="/userInfo?action=showInfo&id=${user.id}">
                         <img height="50" width="50" src="img/default.png" alt="" style="border-radius: 30px"></a>
                 </c:if>
             </c:if>

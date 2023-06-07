@@ -7,6 +7,7 @@ import com.example.case_study_module3.DAO.UserDAO;
 import com.example.case_study_module3.model.Booking;
 import com.example.case_study_module3.model.Options;
 import com.example.case_study_module3.model.Partner;
+import com.example.case_study_module3.model.User;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

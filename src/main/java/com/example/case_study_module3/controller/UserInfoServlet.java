@@ -69,6 +69,9 @@ public class UserInfoServlet extends HttpServlet {
         InputStream fileContent = filePart.getInputStream();
         int id = Integer.parseInt(request.getParameter("id"));
         UserDAO.getInstance().uploadImage(fileContent, id);
+        User user = UserDAO.getInstance().findById(id);
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
         response.sendRedirect("/userInfo?action=showInfo&id=" + id);
     }
 
