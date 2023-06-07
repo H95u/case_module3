@@ -123,8 +123,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Ngày S
-                                    inh</label>
+                                <label>Ngày Sinh</label>
                             </div>
                             <div class="col-md-6">
                                 <p>${user.dob}</p>

@@ -165,7 +165,7 @@ public class PartnerDAO {
                 "from partner join partner_options po on partner.id = po.partner_id\n" +
                 "    join options o on po.options_id = o.id where o.id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1,oId);
+            preparedStatement.setInt(1, oId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("partner.id");
@@ -193,4 +193,82 @@ public class PartnerDAO {
         }
         return partnerList;
     }
+
+    public void setAvailability(Partner partner) {
+        String query = "update partner set availability = ? where id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, partner.getAvailability());
+            preparedStatement.setInt(2, partner.getId());
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Partner> searchByGender(int gId) {
+        List<Partner> partnerList = new ArrayList<>();
+        String query = "select * from partner where gender = ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, gId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nickname = resultSet.getString("nickname");
+                double hourlyRate = resultSet.getDouble("hourly_rate");
+                int availability = resultSet.getInt("availability");
+                LocalDate dob = resultSet.getDate("dob").toLocalDate();
+                String address = resultSet.getString("address");
+                int gender = resultSet.getInt("gender");
+                List<Options> optionsList = findOption(id);
+                Blob imageBlob = resultSet.getBlob("image");
+                InputStream imageStream;
+                if (imageBlob != null) {
+                    imageStream = imageBlob.getBinaryStream();
+                    byte[] imageBytes = imageStream.readAllBytes();
+                    partnerList.add(new Partner(id, nickname,
+                            hourlyRate, availability, imageBytes, dob, address, gender, optionsList));
+                } else {
+                    partnerList.add(new Partner(id, nickname,
+                            hourlyRate, availability, null, dob, address, gender, optionsList));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return partnerList;
+    }
+
+    public List<Partner> searchByName(String name) {
+        List<Partner> partnerList = new ArrayList<>();
+        String query = "select * from partner where nickname like ?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, "%" + name + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nickname = resultSet.getString("nickname");
+                double hourlyRate = resultSet.getDouble("hourly_rate");
+                int availability = resultSet.getInt("availability");
+                LocalDate dob = resultSet.getDate("dob").toLocalDate();
+                String address = resultSet.getString("address");
+                int gender = resultSet.getInt("gender");
+                List<Options> optionsList = findOption(id);
+                Blob imageBlob = resultSet.getBlob("image");
+                InputStream imageStream;
+                if (imageBlob != null) {
+                    imageStream = imageBlob.getBinaryStream();
+                    byte[] imageBytes = imageStream.readAllBytes();
+                    partnerList.add(new Partner(id, nickname,
+                            hourlyRate, availability, imageBytes, dob, address, gender, optionsList));
+                } else {
+                    partnerList.add(new Partner(id, nickname,
+                            hourlyRate, availability, null, dob, address, gender, optionsList));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return partnerList;
+    }
+
 }

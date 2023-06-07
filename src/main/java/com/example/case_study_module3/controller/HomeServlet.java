@@ -1,8 +1,10 @@
 package com.example.case_study_module3.controller;
 
+import com.example.case_study_module3.DAO.BookingDAO;
 import com.example.case_study_module3.DAO.OptionsDAO;
 import com.example.case_study_module3.DAO.PartnerDAO;
 import com.example.case_study_module3.DAO.UserDAO;
+import com.example.case_study_module3.model.Booking;
 import com.example.case_study_module3.model.Options;
 import com.example.case_study_module3.model.Partner;
 
@@ -25,7 +27,7 @@ public class HomeServlet extends HttpServlet {
             action = "";
         }
         switch (action) {
-            case "create":
+            case "searchByName":
 
                 break;
             case "update":
@@ -40,6 +42,9 @@ public class HomeServlet extends HttpServlet {
             case "search":
                 searchByOption(request, response);
                 break;
+            case "searchByGender":
+                searchByGender(request, response);
+                break;
             default:
                 findAll(request, response);
                 break;
@@ -53,8 +58,8 @@ public class HomeServlet extends HttpServlet {
             action = "";
         }
         switch (action) {
-            case "create":
-
+            case "searchByName":
+                searchByName(request, response);
                 break;
             case "update":
                 updatePartnerPost(request, response);
@@ -73,7 +78,17 @@ public class HomeServlet extends HttpServlet {
         List<Options> optionsList = OptionsDAO.getInstance().findAll();
         request.setAttribute("partnerList", partnerList);
         request.setAttribute("optionList", optionsList);
+        List<Booking> bookingList = BookingDAO.getInstance().findAll();
+        for (Partner partner : partnerList) {
+            for (Booking booking : bookingList) {
+                if (partner.getId() == booking.getPartner().getId()) {
+                    partner.setAvailability(0);
+                    PartnerDAO.getInstance().setAvailability(partner);
+                }
+            }
+        }
         request.getRequestDispatcher("/home.jsp").forward(request, response);
+
     }
 
     private void showPartnerInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -130,4 +145,23 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("optionList", optionsList);
         request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
+
+    private void searchByGender(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int gender = Integer.parseInt(request.getParameter("gender"));
+        List<Partner> partnerList = PartnerDAO.getInstance().searchByGender(gender);
+        List<Options> optionsList = OptionsDAO.getInstance().findAll();
+        request.setAttribute("partnerList", partnerList);
+        request.setAttribute("optionList", optionsList);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
+    }
+
+    private void searchByName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        List<Partner> partnerList = PartnerDAO.getInstance().searchByName(name);
+        List<Options> optionsList = OptionsDAO.getInstance().findAll();
+        request.setAttribute("partnerList", partnerList);
+        request.setAttribute("optionList", optionsList);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
+    }
+
 }
