@@ -16,23 +16,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="container" style="border: 1px solid black;width: 600px;margin-top: 100px">
-    <h3>Các dịch vụ cung cấp</h3>
-    <c:forEach var="o" items="${optionList}">
-        <c:set var="isChecked" value=""/>
-        <c:forEach var="p" items="${optionOfPartner}">
-            <c:if test="${o.id == p.id}">
-                <c:set var="isChecked" value="checked"/>
-            </c:if>
-        </c:forEach>
-        <div class="row">
-            <div class="col-lg-5">${o.name}</div>
-            <div class="col-lg-7">
-                <input type="checkbox" name="option${o.id}" value="${o.name}" ${isChecked} />
+<form method="post" action="/partners?action=updateOption&id=${partner.id}">
+    <div class="container" style="border: 1px solid black;width: 600px;margin-top: 100px">
+        <h3>Các dịch vụ cung cấp</h3>
+        <c:forEach var="o" items="${optionList}">
+            <c:set var="isChecked" value=""/>
+            <c:forEach var="p" items="${optionOfPartner}">
+                <c:if test="${o.id == p.id}">
+                    <c:set var="isChecked" value="checked"/>
+                </c:if>
+            </c:forEach>
+            <div class="row">
+                <div class="col-lg-5">${o.name}</div>
+                <div class="col-lg-7">
+                    <input type="checkbox" name="option" value="${o.id}" ${isChecked} />
+                </div>
             </div>
-        </div>
-        <hr>
-    </c:forEach>
-</div>
+            <hr>
+        </c:forEach>
+    </div>
+    <button type="submit">Áp dụng</button>
+</form>
 </body>
 </html>

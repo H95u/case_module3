@@ -13,6 +13,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "PartnerServlet", value = "/partners")
@@ -39,6 +40,9 @@ public class PartnerServlet extends HttpServlet {
             case "showAlbum":
                 showAlbum(request, response);
                 break;
+            case "updateOption":
+                updateOptionGet(request, response);
+                break;
             default:
                 break;
         }
@@ -57,8 +61,8 @@ public class PartnerServlet extends HttpServlet {
             case "delete":
                 deletePartner(request, response);
                 break;
-            case "login":
-
+            case "updateOption":
+                updateOptionPost(request, response);
                 break;
             default:
                 break;
@@ -69,7 +73,7 @@ public class PartnerServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         Partner partner = PartnerDAO.getInstance().findById(id);
         request.setAttribute("user", partner);
-        request.getRequestDispatcher("/partner/partner-info.jsp").forward(request, response);
+        request.getRequestDispatcher("/partner/partner-info-admin.jsp").forward(request, response);
     }
 
     private void createGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -91,8 +95,10 @@ public class PartnerServlet extends HttpServlet {
 
     private void updateOptionGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
+        Partner partner = PartnerDAO.getInstance().findById(id);
         List<Options> optionOfPartner = PartnerDAO.getInstance().findOption(id);
         List<Options> optionList = OptionsDAO.getInstance().findAll();
+        request.setAttribute("partner", partner);
         request.setAttribute("optionList", optionList);
         request.setAttribute("optionOfPartner", optionOfPartner);
         request.getRequestDispatcher("/partner/update-options.jsp").forward(request, response);
@@ -108,9 +114,25 @@ public class PartnerServlet extends HttpServlet {
         int pId = Integer.parseInt(request.getParameter("id"));
         Partner partner = PartnerDAO.getInstance().findById(pId);
         List<Album> albumList = AlbumDAO.getInstance().findAllByPartnerId(pId);
-        request.setAttribute("partner",partner);
-        request.setAttribute("albumList",albumList);
-        request.getRequestDispatcher("/album/album-info.jsp").forward(request,response);
+        request.setAttribute("partner", partner);
+        request.setAttribute("albumList", albumList);
+        request.getRequestDispatcher("/album/album-info.jsp").forward(request, response);
+    }
+
+    private void updateOptionPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Options> optionsList = new ArrayList<>();
+        String[] selectedOptionIds = request.getParameterValues("option");
+        int pId = Integer.parseInt(request.getParameter("id"));
+        PartnerDAO.getInstance().findById(pId);
+        for (int i = 0; i < selectedOptionIds.length; i++) {
+            int oId = Integer.parseInt(selectedOptionIds[i]);
+            optionsList.add(OptionsDAO.getInstance().finById(oId));
+        }
+        OptionsDAO.getInstance().deletePartnerOption(pId);
+        for (Options options : optionsList) {
+            OptionsDAO.getInstance().newPartnerOption(pId, options.getId());
+        }
+        response.sendRedirect("/home");
     }
 
 }

@@ -57,4 +57,24 @@ public class OptionsDAO {
         return option;
     }
 
+    public void deletePartnerOption(int pId) {
+        String query = "delete from partner_options where partner_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, pId);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void newPartnerOption(int pId,int oId) {
+        String query = "insert into partner_options values (?,?) ;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, pId);
+            preparedStatement.setInt(2, oId);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
