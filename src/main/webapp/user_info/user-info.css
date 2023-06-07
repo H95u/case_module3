@@ -95,9 +95,10 @@ body{
 }
 .bookingForm {
     width: 500px;
-    height: 250px;
-    border: 1px solid black;
-    background-color: white;
-    margin-left: 480px;
+    height: 500px;
+    border-radius: 5px;
+    background-color: #bb9696;
+    margin-left: 398px;
     position: absolute;
+    margin-top: 160px;
 }

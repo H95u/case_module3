@@ -14,8 +14,9 @@ fieldset {
     margin: 10px !important;
     background-color: rgba(0, 0, 0, 0.5);
 }
-body {
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+*{
+    background-image: url("/img/tinhyeu.jpg");
+    width: 100%;
 }
 
 caption {

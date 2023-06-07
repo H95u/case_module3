@@ -17,7 +17,7 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/user_info/user-info.css">
-
+    <link rel="stylesheet" href="/partner/partner-info-admin.css">
 </head>
 <body>
 <div>
@@ -27,50 +27,52 @@
     <h1 style="text-align: center;color: white">THÔNG TIN CÁ NHÂN</h1>
 </div>
 <hr>
-<form action="/booking?action=create&pid=${user.id}&uid=${sessionScope.user.id}" method="post">
-    <div class="bookingForm" id="bookingForm" style="display: none">
-        <div class="row">
-            <div class="col-lg-6">Thời gian bắt đầu thuê</div>
-            <div class="col-lg-6">
-                <input type="datetime-local" name="startTime">
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-lg-6">Thời gian kết thúc</div>
-            <div class="col-lg-6">
-                <input type="datetime-local" name="endTime">
-            </div>
-        </div>
-        <hr>
-        <div>
-            <p>Giá : ${user.hourlyRate} /h</p>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-lg-4">Dịch vụ
-            </div>
-            <div class="col-lg-8">
-                <select name="oid">
-                    <c:forEach var="o" items="${user.optionsList}">
-                        <option value="${o.id}">${o.name} - ${o.price}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </div>
-        <hr>
-        <div class="container">
+<div id="bookingFormModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="hideBookingForm();">&times;</span>
+        <form action="/booking?action=create&pid=${user.id}&uid=${sessionScope.user.id}" method="post">
             <div class="row">
-                <div class="col-lg-5">
-                    <button type="submit" class="btn btn-info" style="float: right">Đặt</button>
-                </div>
-                <div class="col-lg-7">
-                    <button type="button" class="btn btn-info" onclick="hideBookingForm();">Quay lại</button>
+                <div class="col-lg-6">Thời gian bắt đầu thuê</div>
+                <div class="col-lg-6">
+                    <input type="datetime-local" name="startTime">
                 </div>
             </div>
-        </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-6">Thời gian kết thúc</div>
+                <div class="col-lg-6">
+                    <input type="datetime-local" name="endTime">
+                </div>
+            </div>
+            <hr>
+            <div>
+                <p>Giá : ${user.hourlyRate} /h</p>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-4">Dịch vụ</div>
+                <div class="col-lg-8">
+                    <select name="oid">
+                        <c:forEach var="o" items="${user.optionsList}">
+                            <option value="${o.id}">${o.name} - ${o.price}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <button type="submit" class="btn btn-info" style="float: right">Đặt</button>
+                    </div>
+                    <div class="col-lg-7">
+                        <button type="button" class="btn btn-info" onclick="closeBookingFormModal();">Quay lại</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>
 <div class="container emp-profile">
     <form id="myForm" method="post" action="/home?action=upload&id=${user.id}" enctype="multipart/form-data">
         <div class="row">
@@ -124,7 +126,7 @@
             </c:if>
             <c:if test="${user.availability == 1 && sessionScope.user != null}">
                 <div class="col-md-1">
-                    <a class="btn btn-danger" onclick="showBookingForm();">Thuê</a>
+                    <a class="btn btn-danger" onclick="openBookingFormModal();">Thuê</a>
                 </div>
             </c:if>
         </div>
@@ -227,12 +229,29 @@
         }
     }
 
-    function showBookingForm() {
-        document.getElementById("bookingForm").style.display = "block";
-    }
+        // Get the modal element
+        const bookingFormModal = document.getElementById("bookingFormModal");
 
-    function hideBookingForm() {
-        document.getElementById("bookingForm").style.display = "none";
-    }
+        // Get the button that opens the modal
+        const openModalButton = document.querySelector("button[data-modal='bookingFormModal']");
+
+        // Get the <span> element that closes the modal
+    const closeModalButton = document.querySelector(".modal-content .close");
+
+    // Function to open the modal
+    function openBookingFormModal() {
+            bookingFormModal.style.display = "block";
+        }
+
+        // Function to close the modal
+    function closeBookingFormModal() {
+            bookingFormModal.style.display = "none";
+        }
+
+    window.onclick = function(event) {
+            if (event.target === bookingFormModal) {
+            closeBookingFormModal();
+        }
+        }
 </script>
 </html>

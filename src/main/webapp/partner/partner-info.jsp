@@ -64,9 +64,9 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2">
-                <a class="btn btn-danger">Thuê</a>
-            </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Thuê
+            </button>
             <div class="col-md-2">
                 <input class="profile-edit-btn" name="btnAddMore"
                        value="${user.availability == 1 ? 'Có thể thuê' : 'Đang bận'}"/>

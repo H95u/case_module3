@@ -16,10 +16,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body style="background: -webkit-linear-gradient(left, #3931af, #00c6ff);">
+<body>
 <form action="/home?action=update&id=${partner.id}" method="post">
     <div id="formRegister">
-        <fieldset style="width: 700px;height: 600px">
+        <fieldset style="width: 640px;height: 640px">
             <legend style="text-align: center">Sửa thông tin</legend>
             <p>Nick name</p>
             <input type="text" placeholder="Họ và tên" name="name" value="${partner.nickname}"/><br>
@@ -43,7 +43,7 @@
             <button style="margin-left: 150px" class="btn btn-warning" type="submit">
                 Sửa
             </button>
-            <button style="margin-left: 200px" class="btn btn-warning">
+            <button style="margin-left: 160px" class="btn btn-warning">
                 <a href="/home?action=partnerInfo&id=${partner.id}">
                     Quay lại
                 </a>
