@@ -27,7 +27,7 @@
     <h1 style="text-align: center;color: white">THÔNG TIN CÁ NHÂN</h1>
 </div>
 <hr>
-<form action="/booking?action=create&pid=${user.id}&uid=${sessionScope.user.id}" method="post" >
+<form action="/booking?action=create&pid=${user.id}&uid=${sessionScope.user.id}" method="post">
     <div class="bookingForm" id="bookingForm" style="display: none">
         <div class="row">
             <div class="col-lg-6">Thời gian bắt đầu thuê</div>
@@ -108,7 +108,7 @@
                                aria-controls="home" aria-selected="true">Thông tin chi tiết</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="/partners?action=showAlbum&id=${user.id}" role="tab"
                                aria-controls="profile" aria-selected="false">Album</a>
                         </li>
                     </ul>
@@ -116,12 +116,14 @@
             </div>
             <c:if test="${sessionScope.user.userRole == 1}">
                 <div class="col-md-2">
-                    <a href="/home?action=update&id=${user.id}"> <input class="profile-edit-btn" name="btnAddMore"
-                                                                        value="Sửa thông tin"/></a>
+                    <a href="/home?action=update&id=${user.id}" class="btn btn-info">Sửa thông tin </a>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn btn-danger" onclick="deleteP(${user.id})">Xóa</a>
                 </div>
             </c:if>
-            <c:if test="${user.availability == 1}">
-                <div class="col-md-2">
+            <c:if test="${user.availability == 1 && sessionScope.user != null}">
+                <div class="col-md-1">
                     <a class="btn btn-danger" onclick="showBookingForm();">Thuê</a>
                 </div>
             </c:if>
@@ -211,6 +213,12 @@
     function submitForm() {
         var form = document.getElementById("myForm");
         form.submit();
+    }
+
+    function deleteP(id) {
+        if (confirm("Bạn chắc chắn muốn xóa?")) {
+            window.location.href = "/partners?action=delete&id=" + id;
+        }
     }
 
     function checkLogin(user) {

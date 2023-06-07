@@ -1,7 +1,9 @@
 package com.example.case_study_module3.controller;
 
+import com.example.case_study_module3.DAO.AlbumDAO;
 import com.example.case_study_module3.DAO.OptionsDAO;
 import com.example.case_study_module3.DAO.PartnerDAO;
+import com.example.case_study_module3.model.Album;
 import com.example.case_study_module3.model.Options;
 import com.example.case_study_module3.model.Partner;
 
@@ -31,6 +33,12 @@ public class PartnerServlet extends HttpServlet {
             case "partnerInfo":
                 showPartnerInfo(request, response);
                 break;
+            case "delete":
+                deletePartner(request, response);
+                break;
+            case "showAlbum":
+                showAlbum(request, response);
+                break;
             default:
                 break;
         }
@@ -48,6 +56,7 @@ public class PartnerServlet extends HttpServlet {
                 break;
             case "delete":
                 deletePartner(request, response);
+                break;
             case "login":
 
                 break;
@@ -94,4 +103,14 @@ public class PartnerServlet extends HttpServlet {
         PartnerDAO.getInstance().deleteById(id);
         response.sendRedirect("/home");
     }
+
+    private void showAlbum(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int pId = Integer.parseInt(request.getParameter("id"));
+        Partner partner = PartnerDAO.getInstance().findById(pId);
+        List<Album> albumList = AlbumDAO.getInstance().findAllByPartnerId(pId);
+        request.setAttribute("partner",partner);
+        request.setAttribute("albumList",albumList);
+        request.getRequestDispatcher("/album/album-info.jsp").forward(request,response);
+    }
+
 }
