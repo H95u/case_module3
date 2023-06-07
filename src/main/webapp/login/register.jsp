@@ -33,7 +33,7 @@
 
 <section>
     <div class="login-box">
-        <form action="/login?action=create">
+        <form action="/login?action=create" method="POST">
             <div>
                 <h2>Đăng Ký</h2>
                 <div class="input-box">

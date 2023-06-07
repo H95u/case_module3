@@ -55,12 +55,11 @@
 <div class="container">
     <h1>Thông tin thuê</h1>
 
-    <form action="/payment" method="POST">
         <div class="profile-img">
-        <c:if test="${user.image == null}">
+        <c:if test="${partner.image == null}">
         <img style="width: 200px; height: 250px; padding: 65px" src="/img/default.png" alt="Default Image" class="default-info-img"/>
         </c:if>
-        <c:if test="${user.image != null}">
+        <c:if test="${partner.image != null}">
         <img style="border-radius: 50px;height: 250px;width: 250px"
              src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(user.image)}"/>
         </c:if>
@@ -92,31 +91,20 @@
         </div>
 
         <div class="form-group">
-            <label>Trạng thái:</label>
-            <c:if test="${partner.availability == 1}">
-                <p>Có thể thuê</p>
-            </c:if>
-            <c:if test="${partner.availability == 0}">
-                <p>Đang bận</p>
-            </c:if>
-        </div>
-        <div class="form-group">
             <label>Giới tính:</label>
-            <p>${partner.gender == 1 ? 'Nam' : "Nữ"}</p>
+            <p>${booking.partner.gender == 1 ? 'Nam' : "Nữ"}</p>
         </div>
         <div class="form-group">
             <label>Tổng tiền:</label>
             <p>${totalPrice}</p>
         </div>
-        <button type="submit" class="btn btn-primary">Thanh toán</button>
-    </form>
+        <button type="submit" class="btn btn-primary" onclick="checkPayment()">Thanh toán</button>
 </div>
 </body>
 <script>
-    document.getElementById("paymentForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        alert("Thanh toán thành công!");
+    function checkPayment() {
+        confirm("Xác nhận thanh toán thành công.")
         window.location.href = "/home";
-    });
+    }
 </script>
 </html>

@@ -88,7 +88,7 @@
             </div>
         </div>
         <hr>
-        <button class="btn btn-primary" type="button" onclick="confirmBooking();">Xác nhận</button>
+        <button class="btn btn-primary" type="button" onclick="confirmBooking()">Xác nhận</button>
         <button class="btn btn-danger" type="submit">Hủy</button>
     </div>
 </form>
