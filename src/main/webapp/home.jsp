@@ -20,15 +20,15 @@
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="p-4 pt-5">
-            <c:if test="${user != null}">
+            <c:if test="${sessionScope.user != null}">
                 <c:if test="${user.image != null}">
                     <a href="/userInfo?action=showInfo&id=${user.id}">
                         <img width="50" height="50" style="border-radius: 30px"
-                             src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(user.image)}"/></a>
+                             src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(sessionScope.user.image)}"/></a>
                     <hr>
                 </c:if>
-                <c:if test="${user.image == null}">
-                    <a href="/userInfo?action=showInfo&id=${user.id}">
+                <c:if test="${sessionScope.user.image == null}">
+                    <a href="/userInfo?action=showInfo&id=${sessionScope.user.id}">
                         <img height="50" width="50" src="img/default.png" alt="" style="border-radius: 30px"></a>
                 </c:if>
             </c:if>
@@ -51,9 +51,11 @@
                         </c:forEach>
                     </ul>
                 </li>
-                <li>
-                    <a href="payment/payment.jsp">Thanh Toán</a>
-                </li>
+                <c:if test="${sessionScope.user != null}">
+                    <li>
+                        <a href="/booking?id=${sessionScope.user.id}">Xem đơn</a>
+                    </li>
+                </c:if>
                 <li>
                     <a href="#">Liên Hệ</a>
                 </li>
@@ -80,7 +82,7 @@
                     <i class="fa fa-bars"></i>
                     <span class="sr-only">Toggle Menu</span>
                 </button>
-
+                <div style="margin-left: 10px">
                 <div class="btn-group">
                     <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -104,7 +106,7 @@
                         </c:forEach>
                     </ul>
                 </div>
-
+                </div>
                 <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -118,8 +120,10 @@
                             <form action="/home?action=searchByName" method="post">
                                 <input type="text" placeholder="Tìm kiếm" name="name" class="input">
                                 <button type="submit">
-                                    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+                                    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z"
+                                              fill-rule="evenodd"></path>
                                     </svg>
                                 </button>
                             </form>
@@ -148,6 +152,7 @@
                 </div>
             </div>
         </nav>
+        <h3 style="text-align: center;color: red;font-style: italic">Danh sách hot girl - hot boy</h3>
         <div class="row" style="margin: auto">
             <c:forEach var="p" items="${partnerList}">
                 <div class="col-lg-3" style="text-align: center;">
@@ -157,7 +162,7 @@
                                  src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(p.image)}"/>
                         </c:if>
                         <p>Nickname : ${p.nickname}</p>
-                        <p>Giá : ${p.hourlyRate}</p>
+                        <p>Giá : ${p.hourlyRate} /h </p>
                         <c:if test="${p.availability == 1}">
                             <p>Trạng thái : Có thể thuê</p>
                         </c:if>

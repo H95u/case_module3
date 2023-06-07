@@ -50,7 +50,7 @@
             </c:forEach>
             <div style="margin-top: 5px;" class="file btn btn-lg btn-primary">
                 Thêm Ảnh
-                <input oninput="submitForm();" type="file" name="file"/>
+                <input oninput="submitForm();" type="file" name="file" />
             </div>
         </div>
     </div>

@@ -27,13 +27,14 @@ public class BookingServlet extends HttpServlet {
         switch (action) {
             case "create":
                 break;
-            case "update":
+            case "payment":
+                 payment(request, response);
                 break;
             case "confirm":
                 confirmBookingGet(request, response);
                 break;
             default:
-
+                findAll(request, response);
                 break;
         }
     }
@@ -82,11 +83,30 @@ public class BookingServlet extends HttpServlet {
         double totalPrice = (duration.toHours() * hourlyRate) + optionPrice;
         request.setAttribute("booking", booking);
         request.setAttribute("time", duration.toHours());
-        request.setAttribute("totalPrice",totalPrice);
+        request.setAttribute("totalPrice", totalPrice);
         request.getRequestDispatcher("/booking/booking-info.jsp").forward(request, response);
     }
 
     private void confirmBookingPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        BookingDAO.getInstance().deleteById(id);
+        response.sendRedirect("/home");
+    }
+
+    private void findAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Booking booking = BookingDAO.getInstance().findByUserId(id);
+        if (booking != null) {
+            request.setAttribute("booking", booking);
+            Duration duration = Duration.between(booking.getStartTime(), booking.getEndTime());
+            request.setAttribute("time", duration.toHours());
+            request.getRequestDispatcher("/payment/payment.jsp").forward(request, response);
+        }else {
+            response.sendRedirect("/booking/no-booking.jsp");
+        }
+    }
+
+    private void payment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         BookingDAO.getInstance().deleteById(id);
         response.sendRedirect("/home");

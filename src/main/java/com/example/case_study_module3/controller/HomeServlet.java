@@ -80,6 +80,10 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("optionList", optionsList);
         List<Booking> bookingList = BookingDAO.getInstance().findAll();
         for (Partner partner : partnerList) {
+            partner.setAvailability(1);
+            PartnerDAO.getInstance().setAvailability(partner);
+        }
+        for (Partner partner : partnerList) {
             for (Booking booking : bookingList) {
                 if (partner.getId() == booking.getPartner().getId()) {
                     partner.setAvailability(0);
